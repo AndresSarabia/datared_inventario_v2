@@ -1,0 +1,47 @@
+.navbar-custom {
+    background-color: #229954 !important;
+}
+
+.sidebar-custom {
+    background-color: #0A2A12 !important;
+}
+
+/* Botón/logo superior izquierdo */
+.brand-link {
+    background-color: #28a745 !important;
+    /* mismo color que navbar */
+    color: #ffffff !important;
+}
+
+/* Ícono dentro del brand */
+.brand-link .brand-image {
+    opacity: 1 !important;
+}
+
+/* Texto del brand */
+.brand-link .brand-text {
+    color: #ffffff !important;
+}
+
+.profile-view {
+    background-color: #0A2A12 !important;
+    /* mismo color que sidebar */
+    color: #ffffff !important;
+}
+
+/* Item activo del sidebar */
+.sidebar-dark-success .nav-sidebar .nav-link.active {
+    background-color: #081b09 !important;
+    /* tono oscuro */
+    color: #ffffff !important;
+}
+
+/* Hover opcional */
+.sidebar-dark-success .nav-sidebar .nav-link:hover {
+    background-color: #2c3b41;
+}
+
+#tabla-usuarios thead th {
+    background-color: #196F3D !important;
+    color: #ffffff !important;
+}
