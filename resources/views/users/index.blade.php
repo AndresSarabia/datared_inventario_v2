@@ -7,6 +7,43 @@
 @endsection
 
 @section('content')
+    <div class="modal fade" id="modalAlert" tabindex="-1" role="dialog" aria-labelledby="modalAlertLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white" id="modalAlertHeader">
+                    <h5 class="modal-title" id="modalAlertTitle">Alerta</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Cerrar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p id="modalAlertMessage"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modalConfirmDelete" tabindex="-1" role="dialog" aria-labelledby="modalConfirmDeleteLabel">
+        <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title" id="modalConfirmDeleteLabel">Confirmar deshabilitación</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Cerrar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p id="modalConfirmDeleteMessage">¿Seguro que deseas deshabilitar este usuario?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancelar</button>
+                    <button type="button" id="btn_confirm_delete" class="btn btn-danger btn-sm">Deshabilitar</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="card">
         <!-- 🔹 Header -->
         <div class="card-header d-flex align-items-center">
@@ -37,7 +74,6 @@
                     <thead>
                         <tr>
                             <th><input type="checkbox" id="check-all"></th>
-                            <th>ID</th>
                             <th>Nombre</th>
                             <th>Apellidos</th>
                             <th>Email</th>
@@ -48,291 +84,27 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($users as $user)
-                            <tr>
-                                <td><input type="checkbox" class="row-checkbox"></td>
-                                <td>{{ $user->id }}</td>
-                                <td>{{ $user->nombre }}</td>
-                                <td>{{ $user->apellidos }}</td>
-                                <td>{{ $user->email }}</td>
-                                <td>
-                                    @if ($user->perfil == 'administrador')
-                                        <span class="badge badge-primary">Administrador</span>
-                                    @elseif ($user->perfil == 'supervisor')
-                                        <span class="badge badge-info">Supervisor</span>
-                                    @elseif ($user->perfil == 'tecnico')
-                                        <span class="badge badge-secondary">Técnico</span>
-                                    @else
-                                        <span class="badge badge-light">{{ $user->perfil }}</span>
-                                    @endif
-                                </td>
-                                <td>{{ $user->cargo }}</td>
-                                <td>{{ Carbon\Carbon::parse($user->created_at)->format('d/m/Y H:i:s') }}</td>
-                                <td>
-                                    @if ($user->estado == '1')
-                                        <span class="badge badge-success">Habilitado</span>
-                                    @else
-                                        <span class="badge badge-danger">Deshabilitado</span>
-                                    @endif
-                                </td>
-                            </tr>
-                        @endforeach
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
+    @include('users.mod_crear_usu')
+    @include('users.mod_editar_usu')
+    @include('users.mod_editar_pass')
+    @include('users.mod_con_usu')
 @endsection
 
 @section('js')
     <script>
-        $(document).ready(function() {
-            let table = $('#tabla-usuarios').DataTable({
-                responsive: {
-                    details: {
-                        type: 'column',
-                        target: 0
-                    }
-                },
-                autoWidth: false,
-                scrollX: true,
-                language: {
-                    search: "Buscar:",
-                    lengthMenu: "Mostrar _MENU_ registros",
-                    info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
-                    paginate: {
-                        previous: "Anterior",
-                        next: "Siguiente"
-                    }
-                },
-                dom: "<'row'<'col-md-6'B><'col-md-6'f>>" +
-                    "<'row'<'col-sm-12'tr>>" +
-                    "<'row'<'col-md-5'i><'col-md-7'p>>",
-                buttons: [{
-                        extend: 'collection',
-                        text: '<i class="fas fa-upload"></i> Exportar',
-                        className: 'btn btn-secondary',
-                        buttons: [{
-                                extend: 'copy',
-                                text: '<i class="fas fa-copy"></i> Copiar',
-                                exportOptions: {
-                                    columns: [0, 1, 2]
-                                }
-                            },
-                            {
-                                extend: 'csv',
-                                text: '<i class="fas fa-file-csv"></i> CSV',
-                                exportOptions: {
-                                    columns: [0, 1, 2]
-                                }
-                            },
-                            {
-                                extend: 'excel',
-                                text: '<i class="fas fa-file-excel"></i> Excel',
-                                exportOptions: {
-                                    columns: [0, 1, 2]
-                                }
-                            },
-                            {
-                                extend: 'pdf',
-                                text: '<i class="fas fa-file-pdf"></i> PDF',
-                                exportOptions: {
-                                    columns: [0, 1, 2]
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        extend: 'collection',
-                        text: '<i class="fas fa-plus-circle"></i> Nuevo',
-                        className: 'btn btn-secondary',
-                        buttons: [{
-                            text: 'Nuevo usuario',
-                            action: function() {
-                                window.location.href = "{{ route('usuarios.create') }}";
-                            }
-                        }]
-                    },
-                    {
-                        extend: 'collection',
-                        text: '<i class="fas fa-edit"></i> Modificar',
-                        className: 'btn btn-secondary',
-                        buttons: [{
-                                text: 'Actualizar datos',
-                                action: function() {
-
-                                    let data = table.row('.selected').data();
-
-                                    if (!data) {
-                                        alert('Selecciona un usuario');
-                                        return;
-                                    }
-
-                                    let userId = data[1];
-                                    window.location.href = '/adm/usuarios/' + userId + '/edit';
-                                }
-                            },
-                            {
-                                text: 'Actualizar password',
-                                action: function() {
-
-                                    let data = table.row('.selected').data();
-
-                                    if (!data) {
-                                        alert('Selecciona un usuario');
-                                        return;
-                                    }
-
-                                    let userId = data[1];
-                                    window.location.href = '/adm/usuarios/' + userId + '/edit';
-                                }
-                            },
-                            {
-                                text: 'Eliminar usuario',
-                                action: function() {
-
-                                    let data = table.row('.selected').data();
-
-                                    if (!data) {
-                                        alert('Selecciona un usuario');
-                                        return;
-                                    }
-
-                                    let userId = data[1];
-
-                                    if (confirm('¿Eliminar usuario?')) {
-                                        window.location.href = '/adm/usuarios/' + userId +
-                                            '/delete';
-                                    }
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        extend: 'collection',
-                        text: '<i class="fas fa-eye"></i> Consulta',
-                        className: 'btn btn-secondary',
-                        buttons: [{
-                            text: 'Consultar usuario',
-                            action: function() {
-                                window.location.href = "{{ route('usuarios.create') }}";
-                            }
-                        }]
-                    },
-                    {
-                        extend: 'collection',
-                        text: '<i class="fas fa-file-alt"></i> Informe',
-                        className: 'btn btn-secondary',
-                        buttons: [{
-                            text: 'Listado usuario',
-                            action: function() {
-                                window.location.href = "{{ route('usuarios.create') }}";
-                            }
-                        }]
-                    },
-                    {
-                        extend: 'collection',
-                        text: '<i class="fas fa-plus"></i> Almacen',
-                        className: 'btn btn-secondary',
-                        buttons: [{
-                                text: 'Asignar Almacen Tec.',
-                                action: function() {
-                                    window.location.href = "{{ route('usuarios.create') }}";
-                                }
-                            },
-                            {
-                                text: 'Asignar Almacen Adm.',
-                                action: function() {
-                                    window.location.href = "{{ route('usuarios.create') }}";
-                                }
-                            }
-                        ]
-                    },
-                ],
-
-                columnDefs: [{
-                        className: 'control',
-                        orderable: false,
-                        targets: 0
-                    },
-                    {
-                        targets: -1,
-                        orderable: false,
-                        searchable: false
-                    }
-                ]
-            });
-
-            // seleccionar fila
-            $('#tabla-usuarios tbody').on('click', 'tr', function(e) {
-                // evitar conflicto si clickeas directamente el checkbox
-                if ($(e.target).is('input[type="checkbox"]')) return;
-
-                let checkbox = $(this).find('.row-checkbox');
-
-                if ($(this).hasClass('selected')) {
-                    $(this).removeClass('selected');
-                    checkbox.prop('checked', false);
-                } else {
-                    table.$('tr.selected').removeClass('selected');
-                    $('.row-checkbox').prop('checked', false);
-
-                    $(this).addClass('selected');
-                    checkbox.prop('checked', true);
-                }
-            });
-
-            $('#tabla-usuarios tbody').on('change', '.row-checkbox', function() {
-
-                let row = $(this).closest('tr');
-
-                if (this.checked) {
-                    table.$('tr.selected').removeClass('selected');
-                    $('.row-checkbox').prop('checked', false);
-
-                    row.addClass('selected');
-                    $(this).prop('checked', true);
-                } else {
-                    row.removeClass('selected');
-                }
-            });
-
-            $('#check-all').on('change', function() {
-                let checked = this.checked;
-
-                $('.row-checkbox').prop('checked', checked);
-
-                if (checked) {
-                    $('#tabla-usuarios tbody tr').addClass('selected');
-                } else {
-                    $('#tabla-usuarios tbody tr').removeClass('selected');
-                }
-            });
-
-            // // filtro por estado
-            // $.fn.dataTable.ext.search.push(function(settings, data) {
-
-            //     let filtro = window.estadoFiltro || 'todos';
-            //     let estado = data[4]; // columna estado
-
-            //     if (filtro === 'todos') return true;
-
-            //     if (filtro === 'habilitado' && estado.includes('Habilitado')) return true;
-            //     if (filtro === 'deshabilitado' && estado.includes('Deshabilitado')) return true;
-
-            //     return false;
-            // });
-
-            // // click en dropdown
-            // $('.filtro-estado').on('click', function(e) {
-            //     e.preventDefault();
-
-            //     let texto = $(this).text();
-            //     $('.dropdown-toggle').html('<i class="fas fa-filter"></i> ' + texto);
-
-            //     window.estadoFiltro = $(this).data('estado');
-            //     table.draw();
-            // });
-        });
+        window.routes = {
+            usersData: "{{ route('users.data') }}",
+            createUser: "{{ route('usuarios.store') }}",
+            updateUserBase: "{{ url('/adm/usuarios') }}",
+            updateUserPasswordBase: "{{ url('/adm/usuarios') }}",
+            deleteUserBase: "{{ url('/adm/usuarios') }}",
+            infoList: "{{ route('usuarios.info_list_usu') }}"
+        };
     </script>
+    <script src="{{ asset('js/users/index.js') }}"></script>
 @endsection

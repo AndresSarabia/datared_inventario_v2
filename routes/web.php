@@ -26,8 +26,12 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::middleware('permission:acceso usuarios')->group(function () {
-        Route::resource('/adm/usuarios', UserController::class);
+        Route::get('/adm/usuarios/datatables', [UserController::class, 'datatables'])->name('users.data');
+        Route::post('/adm/usuarios/{usuario}/password', [UserController::class, 'updatePassword'])->name('usuarios.updatePassword');
+        Route::get('/adm/usuarios/info_list_usu', [UserController::class, 'info_list_usu'])->name('usuarios.info_list_usu');
+        Route::resource('/adm/usuarios', UserController::class);       
     });
+
 
 });
 

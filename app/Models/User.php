@@ -91,4 +91,19 @@ class User extends Authenticatable implements JWTSubject
             $this->save();
         }
     }
+
+    public function getPerfilColorAttribute()
+    {
+        return match ($this->perfil) {
+            'administrador' => 'primary',
+            'supervisor' => 'info',
+            'tecnico' => 'secondary',
+            default => 'light',
+        };
+    }
+
+    public function getFechaRegistroAttribute()
+    {
+        return $this->created_at->format('d/m/Y H:i:s');
+    }
 }
