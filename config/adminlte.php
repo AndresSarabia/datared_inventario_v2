@@ -339,21 +339,65 @@ return [
         //     'icon' => 'fas fa-fw fa-lock',
         // ],
         [
+            'text' => 'Parámetros',
+            'icon' => 'fas fa-list-ul',
+            'submenu' => [
+                [
+                    'text' => 'Unidad de Medida',
+                    'url' => 'unidad_medida',
+                    'icon' => 'fas fa-ruler',
+                ],
+                [
+                    'text' => 'Tipo de producto',
+                    'url' => 'tipo_producto',
+                    'icon' => 'fas fa-boxes',
+                ],
+                [
+                    'text' => 'Producto',
+                    'url' => 'producto',
+                    'icon' => 'fas fa-box',
+                ],
+                [
+                    'text' => 'Almacén',
+                    'url' => 'almacen',
+                    'icon' => 'fas fa-warehouse',
+                ],
+                [
+                    'text' => 'Motivo de ingreso',
+                    'url' => 'motivo_ingreso',
+                    'icon' => 'fas fa-arrow-circle-down',
+                ],
+                [
+                    'text' => 'Motivo de salida',
+                    'url' => 'motivo_salida',
+                    'icon' => 'fas fa-arrow-circle-up',
+                ],
+                [
+                    'text' => 'Proveedor',
+                    'url' => 'proveedor',
+                    'icon' => 'fas fa-truck',
+                ]
+            ],
+        ],
+        [
             'text' => 'Administración',
             'icon' => 'fas fa-users-cog',
             'submenu' => [
                 [
                     'text' => 'Usuarios',
                     'url' => 'adm/usuarios',
+                    'icon' => 'fas fa-users',
                     'can' => 'acceso usuarios'
                 ],
                 [
                     'text' => 'Perfiles',
                     'url' => 'adm/perfiles',
+                    'icon' => 'fas fa-user-tag',
                 ],
                 [
                     'text' => 'Permisos',
                     'url' => 'adm/permisos',
+                    'icon' => 'fas fa-lock',
                 ]
                 // [
                 //     'text' => 'level_one',
@@ -385,22 +429,22 @@ return [
                 // ],
             ],
         ],
-        ['header' => 'labels'],
-        [
-            'text' => 'important',
-            'icon_color' => 'red',
-            'url' => '#',
-        ],
-        [
-            'text' => 'warning',
-            'icon_color' => 'yellow',
-            'url' => '#',
-        ],
-        [
-            'text' => 'information',
-            'icon_color' => 'cyan',
-            'url' => '#',
-        ],
+        // ['header' => 'labels'],
+        // [
+        //     'text' => 'important',
+        //     'icon_color' => 'red',
+        //     'url' => '#',
+        // ],
+        // [
+        //     'text' => 'warning',
+        //     'icon_color' => 'yellow',
+        //     'url' => '#',
+        // ],
+        // [
+        //     'text' => 'information',
+        //     'icon_color' => 'cyan',
+        //     'url' => '#',
+        // ],
     ],
 
     /*
