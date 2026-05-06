@@ -7,24 +7,6 @@
 @endsection
 
 @section('content')
-    <div class="modal fade" id="modalAlert" tabindex="-1" role="dialog" aria-labelledby="modalAlertLabel" aria-hidden="true">
-        <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header bg-primary text-white" id="modalAlertHeader">
-                    <h5 class="modal-title" id="modalAlertTitle">Alerta</h5>
-                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Cerrar">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p id="modalAlertMessage"></p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cerrar</button>
-                </div>
-            </div>
-        </div>
-    </div>
     <div class="modal fade" id="modalConfirmDelete" tabindex="-1" role="dialog" aria-labelledby="modalConfirmDeleteLabel">
         <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -44,6 +26,7 @@
             </div>
         </div>
     </div>
+    @include('partials.alert-message')
     <div class="card">
         <!-- 🔹 Header -->
         <div class="card-header d-flex align-items-center">
@@ -84,5 +67,6 @@
             infoListAlmacen: "{{ route('almacen.info_list_alm') }}",
         };
     </script>
+    <script src="{{ asset('js/shared/alerts.js') }}"></script>
     <script src="{{ asset('js/almacen/index.js') }}"></script>
 @endsection

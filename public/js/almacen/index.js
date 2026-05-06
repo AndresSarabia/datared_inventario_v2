@@ -243,15 +243,7 @@ $(document).ready(function () {
     });
 
     function showAlert(type, title, message) {
-        let headerClass = 'bg-info';
-        if (type === 'success') headerClass = 'bg-success';
-        if (type === 'warning') headerClass = 'bg-warning';
-        if (type === 'error') headerClass = 'bg-danger';
-
-        $('#modalAlertHeader').removeClass('bg-info bg-success bg-warning bg-danger').addClass(headerClass);
-        $('#modalAlertTitle').text(title);
-        $('#modalAlertMessage').text(message);
-        $('#modalAlert').modal('show');
+        window.pageAlert.show(type, title, message, 10000);
     }
 
     function openDeleteModal(data) {
