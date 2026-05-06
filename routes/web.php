@@ -1,8 +1,15 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UnidadMedidaController;
+use App\Http\Controllers\TipoProductoController;
+use App\Http\Controllers\ProductoController;
+use App\Http\Controllers\AlmacenController;
+use App\Http\Controllers\MotivoIngresoController;
+use App\Http\Controllers\MotivoSalidaController;
+use App\Http\Controllers\ProveedorController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,8 +38,18 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/adm/usuarios/info_list_usu', [UserController::class, 'info_list_usu'])->name('usuarios.info_list_usu');
         Route::resource('/adm/usuarios', UserController::class);       
     });
+    
+    Route::get('/almacen/datatables', [AlmacenController::class, 'datatables'])->name('almacen.data');
+    Route::get('/almacen/info-list', [AlmacenController::class, 'info_list_alm'])->name('almacen.info_list_alm');
+    Route::resource('almacen', AlmacenController::class);
 
 
+    Route::resource('unidad_medida', UnidadMedidaController::class);
+    Route::resource('tipo_producto', TipoProductoController::class);
+    Route::resource('producto', ProductoController::class);
+    Route::resource('motivo_ingreso', MotivoIngresoController::class);
+    Route::resource('motivo_salida', MotivoSalidaController::class);
+    Route::resource('proveedor', ProveedorController::class);
 });
 
 require __DIR__.'/auth.php';
