@@ -43,8 +43,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/almacen/info-list', [AlmacenController::class, 'info_list_alm'])->name('almacen.info_list_alm');
     Route::resource('almacen', AlmacenController::class);
 
-
+    Route::get('/unidad_medida/datatables', [UnidadMedidaController::class, 'datatables'])->name('unidad_medida.data');
     Route::resource('unidad_medida', UnidadMedidaController::class);
+
     Route::resource('tipo_producto', TipoProductoController::class);
     Route::resource('producto', ProductoController::class);
     Route::resource('motivo_ingreso', MotivoIngresoController::class);
