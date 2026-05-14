@@ -13,7 +13,7 @@ class StoreTipoProductoRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -25,6 +25,13 @@ class StoreTipoProductoRequest extends FormRequest
     {
         return [
             //
+            'descripcion' => 'required', 
+        ];
+    }
+    public function messages()      
+    {
+        return[   
+            'descripcion'=>'El campo descripción es obligatorio',
         ];
     }
 }

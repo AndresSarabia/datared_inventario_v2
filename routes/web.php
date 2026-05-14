@@ -46,7 +46,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/unidad_medida/datatables', [UnidadMedidaController::class, 'datatables'])->name('unidad_medida.data');
     Route::resource('unidad_medida', UnidadMedidaController::class);
 
+    Route::get('/tipo_producto/datatables', [TipoProductoController::class, 'datatables'])->name('tipo_producto.data');
+    Route::get('/tipo_producto/info-list', [TipoProductoController::class, 'info_list_tip'])->name('tipo_producto.info_list_tip');
     Route::resource('tipo_producto', TipoProductoController::class);
+
     Route::resource('producto', ProductoController::class);
     Route::resource('motivo_ingreso', MotivoIngresoController::class);
     Route::resource('motivo_salida', MotivoSalidaController::class);

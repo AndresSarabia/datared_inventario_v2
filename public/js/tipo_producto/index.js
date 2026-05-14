@@ -1,12 +1,12 @@
 $(document).ready(function () {
-    let deleteUnidadMedidaId = null;
+    let deleteTipoProductoId = null;
 
-    let table = $('#tabla-unidad-medida').DataTable({
+    let table = $('#tabla-tipo-producto').DataTable({
         processing: true,
         serverSide: true,
         ajax: {
-            url: window.routes.unidadMedidaData,
-            type: 'GET',
+            url: window.routes.tipoProductoData,
+            type: 'GET'
         },
         columns: [
             {
@@ -17,11 +17,9 @@ $(document).ready(function () {
                     return '<input type="checkbox" class="row-checkbox">';
                 }
             },
-            { data: 'id' },
-            { data: 'codigo' },
-            { data: 'descripcion' },
-            { data: 'abreviatura' },
-            { data: 'estado_badge' },
+            { data: 'codigo', name: 'codigo' },
+            { data: 'descripcion', name: 'descripcion' },
+            { data: 'estado_badge', name: 'estado_badge' }
         ],
         responsive: true,
         autoWidth: false,
@@ -44,9 +42,9 @@ $(document).ready(function () {
                 text: '<i class="fas fa-plus-circle"></i> Nuevo',
                 className: 'btn btn-secondary',
                 buttons: [{
-                    text: 'Nueva Unidad de Medida',
+                    text: 'Nuevo Tipo de Producto',
                     action: function () {
-                        $('#mod_cre_unid').modal('show');
+                        $('#mod_cre_tip').modal('show');
                     }
                 }]
             },
@@ -55,7 +53,7 @@ $(document).ready(function () {
                 text: '<i class="fas fa-edit"></i> Modificar',
                 className: 'btn btn-secondary',
                 buttons: [{
-                    text: 'Actualizar Unidad',
+                    text: 'Actualizar Tipo de Producto',
                     action: function () {
 
                         let data = table.row('.selected').data();
@@ -66,11 +64,11 @@ $(document).ready(function () {
                         }
 
                         fillEditModal(data);
-                        $('#mod_edit_unid').modal('show');
+                        $('#mod_edi_tip').modal('show');
                     }
                 },
                 {
-                    text: 'Deshabilitar Unidad',
+                    text: 'Deshabilitar Tipo de Producto',
                     action: function () {
 
                         let data = table.row('.selected').data();
@@ -85,7 +83,18 @@ $(document).ready(function () {
                         openDeleteModal(data);
                     }
                 }]
-            }
+            },
+            {
+                extend: 'collection',
+                text: '<i class="fas fa-file-alt"></i> Informe',
+                className: 'btn btn-secondary',
+                buttons: [{
+                    text: 'Listado Tipos Prods.',
+                    action: function () {
+                        window.open(window.routes.infoListTipoProducto, '_blank');
+                    }
+                }]
+            },
         ],
 
         columnDefs: [
@@ -98,7 +107,7 @@ $(document).ready(function () {
         ],
     });
 
-    $('#tabla-unidad-medida tbody').on('click', 'tr', function (e) {
+    $('#tabla-tipo-producto tbody').on('click', 'tr', function (e) {
         if ($(e.target).is('input[type="checkbox"]')) return;
 
         let checkbox = $(this).find('.row-checkbox');
@@ -115,8 +124,7 @@ $(document).ready(function () {
         }
     });
 
-    $('#tabla-unidad-medida tbody').on('change', '.row-checkbox', function () {
-
+    $('#tabla-tipo-producto tbody').on('change', '.row-checkbox', function () {
         let row = $(this).closest('tr');
 
         if (this.checked) {
@@ -131,84 +139,80 @@ $(document).ready(function () {
     });
 
     $('#check-all').on('change', function () {
-
         let checked = this.checked;
 
         $('.row-checkbox').prop('checked', checked);
 
         if (checked) {
-            $('#tabla-unidad-medida tbody tr').addClass('selected');
+            $('#tabla-tipo-producto tbody tr').addClass('selected');
         } else {
-            $('#tabla-unidad-medida tbody tr').removeClass('selected');
+            $('#tabla-tipo-producto tbody tr').removeClass('selected');
         }
     });
 
-    $('#btn_reg_unid').on('click', function () {
-        let formData = $('#form_crear_unid').serialize();
+    $('#btn_reg_tip').on('click', function () {
+        let formData = $('#form_crear_tip').serialize();
 
         $.ajax({
-            url: window.routes.createUnidadMedida,
+            url: window.routes.createTipoProducto,
             method: 'POST',
             data: formData,
             success: function (response) {
-                $('#mod_cre_unid').modal('hide');
-                $('#form_crear_unid')[0].reset();
-                table.ajax.reload(null, false);
+                $('#mod_cre_tip').modal('hide');
+                $('#form_crear_tip')[0].reset();
+                table.ajax.reload();
                 showAlert('success', 'Éxito', response.message);
             },
             error: function (xhr) {
                 let errors = xhr.responseJSON.errors || {};
                 let errorMessages = Object.values(errors).flat();
 
-                //Limpiar errores previos
-                $('#error-unid').html('');
+                $('#error-tip').html('');
 
                 errorMessages.forEach(msg => {
-                    $('#error-unid').append(`<div>${msg}</div>`);
+                    $('#error-tip').append('<li>' + msg + '</li>');
                 });
 
-                $('#message-error-unid').show();
+                $('#message-error-tip').show();
             }
         });
     });
 
     function fillEditModal(data) {
         $('#id_edi').val(data.id);
-        $('#cod_edi').val(data.codigo);
-        $('#descrip_edi').val(data.descripcion);
-        $('#abrev_edi').val(data.abreviatura);
-    }
+        $('#codigo_edi').val(data.codigo);
+        $('#descripcion_edi').val(data.descripcion);
+        $('#estado_edi').val(data.estado === '1' ? 'Habilitado' : 'Deshabilitado');
+    };
 
-    $('#btn_act_unid').on('click', function (e) {
+    $('#btn_act_tip').on('click', function (e) {
         e.preventDefault();
 
-        let unidadId = $('#id_edi').val();
-        let formData = $('#form_editar_unid').serialize();
+        let tipoProductoId = $('#id_edi').val();
+        let formData = $('#form_editar_tip').serialize();
 
         $.ajax({
-            url: `${window.routes.unidadMedidaBase}/${unidadId}`,
+            url: `${window.routes.tipoProductoBase}/${tipoProductoId}`,
             method: 'PUT',
             data: formData,
             success: function (response) {
-                $('#mod_edit_unid').modal('hide');
-                table.ajax.reload(null, false);
+                $('#mod_edi_tip').modal('hide');
+                table.ajax.reload();
                 showAlert('success', 'Éxito', response.message);
             },
             error: function (xhr) {
                 let errors = xhr.responseJSON.errors || {};
                 let errorMessages = Object.values(errors).flat();
 
-                //Limpiar errores previos
-                $('#error-edi').html('');
+                $('#error-tip').html('');
 
                 errorMessages.forEach(msg => {
-                    $('#error-edi').append(`<div>${msg}</div>`);
+                    $('#error-tip').append('<li>' + msg + '</li>');
                 });
 
-                $('#message-error-edi').show();
+                $('#message-error-tip').show();
             }
         });
-
     });
 
     function showAlert(type, title, message) {
@@ -216,7 +220,7 @@ $(document).ready(function () {
     }
 
     function openDeleteModal(data) {
-        deleteUnidadId = data.id;
+        deleteTipoProductoId = data.id;
         $('#modalConfirmDeleteMessage').text(
             '¿Está seguro de eliminar el registro (' + data.codigo + ') - ' + data.descripcion + '?'
         );
@@ -224,10 +228,10 @@ $(document).ready(function () {
     }
 
     $('#btn_confirm_delete').on('click', function () {
-        if (!deleteUnidadId) return;
+        if (!deleteTipoProductoId) return;
 
         $.ajax({
-            url: `${window.routes.unidadMedidaBase}/${deleteUnidadId}`,
+            url: `${window.routes.tipoProductoBase}/${deleteTipoProductoId}`,
             method: 'DELETE',
             data: {
                 _token: $('meta[name="csrf-token"]').attr('content')
@@ -243,5 +247,4 @@ $(document).ready(function () {
             }
         });
     });
-
 });
