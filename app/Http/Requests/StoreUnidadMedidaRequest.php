@@ -13,7 +13,7 @@ class StoreUnidadMedidaRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -25,6 +25,15 @@ class StoreUnidadMedidaRequest extends FormRequest
     {
         return [
             //
+            'descripcion' =>'required|max:45',
+            'abreviatura' =>'required|max:8', 
+        ];
+    }
+    public function messages()    
+    {
+        return[   
+            'descripcion'=>'El campo descripción es obligatorio',
+            'abreviatura'=>'El campo abreviatura es obligatorio',
         ];
     }
 }
