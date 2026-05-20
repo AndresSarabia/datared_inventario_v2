@@ -25,7 +25,7 @@ return new class extends Migration
         Schema::create('motivo_ingreso', function(Blueprint $table){
             $table->increments('id');  
             $table->string('descripcion',128);
-            $table->string('obsv',64);
+            $table->string('obsv',64)->nullable();
             $table->string('estado',1);         
             $table->timestamps();       
         });
@@ -33,7 +33,7 @@ return new class extends Migration
         Schema::create('motivo_salida', function(Blueprint $table){
             $table->increments('id');  
             $table->string('descripcion',128);
-            $table->string('obsv',64);
+            $table->string('obsv',64)->nullable();
             $table->string('estado',1);         
             $table->timestamps();       
         });

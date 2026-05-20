@@ -36,3 +36,18 @@ window.pageAlert = (function () {
 
     return { show };
 })();
+
+window.showAlert = function (
+    type,
+    title,
+    message,
+    duration = 5000
+) {
+
+    window.pageAlert.show(
+        type,
+        title,
+        message,
+        duration
+    );
+};

@@ -50,8 +50,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/tipo_producto/info-list', [TipoProductoController::class, 'info_list_tip'])->name('tipo_producto.info_list_tip');
     Route::resource('tipo_producto', TipoProductoController::class);
 
-    Route::resource('producto', ProductoController::class);
+    Route::get('/motivo_ingreso/datatables', [MotivoIngresoController::class, 'datatables'])->name('motivo_ingreso.data');
+    Route::get('/motivo_ingreso/info-list', [MotivoIngresoController::class, 'info_list_mot'])->name('motivo_ingreso.info_list_mot');
     Route::resource('motivo_ingreso', MotivoIngresoController::class);
+    
+    Route::resource('producto', ProductoController::class);
     Route::resource('motivo_salida', MotivoSalidaController::class);
     Route::resource('proveedor', ProveedorController::class);
 });
