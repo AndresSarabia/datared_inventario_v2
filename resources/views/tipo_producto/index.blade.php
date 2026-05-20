@@ -67,4 +67,6 @@
     </script>
     <script src="{{ asset('js/shared/alerts.js') }}"></script>
     <script src="{{ asset('js/tipo_producto/index.js') }}"></script>
+    <script src="{{ asset('js/tipo_producto/table.js') }}"></script>
+    <script src="{{ asset('js/tipo_producto/crud.js') }}"></script>
 @endsection

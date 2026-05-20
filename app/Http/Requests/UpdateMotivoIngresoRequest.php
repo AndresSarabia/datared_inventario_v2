@@ -13,7 +13,7 @@ class UpdateMotivoIngresoRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -25,6 +25,15 @@ class UpdateMotivoIngresoRequest extends FormRequest
     {
         return [
             //
+            'descripcion' => 'required|max:128',
+            'obsv' => 'nullable|max:64',
+        ];
+    }
+    public function messages()        
+    { 
+        return[   
+            'descripcion'=>'El campo descripción es obligatorio',   
+            'obsv'=>'El campo observaciones debe ser una cadena de texto de máximo 64 caracteres'
         ];
     }
 }

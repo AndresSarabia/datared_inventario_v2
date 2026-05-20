@@ -13,7 +13,7 @@ class StoreMotivoIngresoRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -25,6 +25,13 @@ class StoreMotivoIngresoRequest extends FormRequest
     {
         return [
             //
+            'descripcion' => 'required|max:128',
+        ];
+    }
+    public function messages()        
+    { 
+        return[   
+            'descripcion'=>'El campo descripción es obligatorio',   
         ];
     }
 }
